@@ -9,15 +9,14 @@ int is_valid_decryption(const char *filename) {
     }
     char ch;
     while ((ch = fgetc(file)) != EOF) {
-        // Check if the character is printable or a common valid ASCII character
+        
         if (!isprint(ch) && !isspace(ch)) {
             fclose(file);
-            return 0; // Invalid decryption if any non-printable character is found
+            return 0; 
         }
     }
     fclose(file);
-    return 1; // Valid decryption if all characters are printable
-}
+    return 1; 
 
 int main() {
     FILE *encrypted, *decrypted;
@@ -25,19 +24,19 @@ int main() {
     int key;
     int found = 0;
 
-    // Open the encrypted file
+    // Open the encrypted file(give your file location)
     encrypted = fopen("D:\\c files checker\\encryptedfile.txt", "r");
     if (encrypted == NULL) {
         printf("Error in opening the encrypted file\n");
         return 1;
     }
 
-    // Try decryption with all possible keys
+    
     for (key = 1; key <= 255; key++) {
         // Rewind the file pointer to the start for each key
         rewind(encrypted);
 
-        // Create a temporary decrypted file
+       
         char temp_filename[50];
         sprintf(temp_filename, "D:\\c files checker\\temp_decrypted.txt");
         decrypted = fopen(temp_filename, "w");
@@ -47,19 +46,19 @@ int main() {
             return 1;
         }
 
-        // Attempt decryption with the current key
+        
         while ((ch = fgetc(encrypted)) != EOF) {
             fputc(ch - key, decrypted);
         }
 
         fclose(decrypted);
 
-        // Validate the decrypted file
+        // FOR VALIDATION
         if (is_valid_decryption(temp_filename)) {
             printf("Decryption successful with key: %d\n", key);
             printf("Decrypted data saved in: D:\\c files checker\\decryptedfile.txt\n");
 
-            // Rename the temporary file as the final decrypted file
+            
             rename(temp_filename, "D:\\c files checker\\decryptedfile.txt");
 
             found = 1;
